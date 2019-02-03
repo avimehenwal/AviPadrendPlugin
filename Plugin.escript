@@ -44,7 +44,7 @@ static initGUI = fn(_gui){
 				gui.openDialog({
 					GUI.TYPE : GUI.TYPE_POPUP_DIALOG,
 					GUI.LABEL : "AviProject-Window",
-					GUI.SIZE : [300,100],
+					GUI.SIZE : [300,400],
 					GUI.ACTIONS : [
 						[ "Cancel",fn(){	PADrend.message("Bye!"); }, "Tooltip: Run away!" ]
 					],
@@ -65,6 +65,20 @@ static initGUI = fn(_gui){
                 // load escript
                 load(__DIR__ + "/aviplugin.escript");
             }
+		},
+		{   GUI.TYPE : GUI.TYPE_BUTTON,
+			GUI.LABEL : "Load MeshBuilderExample.escript",
+			GUI.COLOR : GUI.BLUE,
+			//GUI.FONT : GUI.FONT_ID_LARGE,
+			GUI.TOOLTIP : "Dangerous button! Do not press!",
+			GUI.ON_CLICK : fn(){load(__DIR__ + "/MeshBuilderExample.escript");}
+		},
+		{   GUI.TYPE : GUI.TYPE_BUTTON,
+			GUI.LABEL : "Load toy.escript",
+			GUI.COLOR : GUI.GREEN,
+			//GUI.FONT : GUI.FONT_ID_LARGE,
+			GUI.TOOLTIP : "Dangerous button! Do not press!",
+			GUI.ON_CLICK : fn(){load(__DIR__ + "/toy.escript");}
 		},
 		{
 			GUI.TYPE : GUI.TYPE_NUMBER,
