@@ -1,31 +1,51 @@
-//building nodes
-var rootNode = new MinSG.ListNode();
-var listNode = new MinSG.ListNode();
+var clipSphere = fn(rootNode){
+    var numSegments = 20; //number of segments in horizontal and vertical direction
+    var sphere_mesh = Rendering.MeshBuilder.createSphere(numSegments, numSegments);
+    // Half sphere
+    Rendering.eliminateTrianglesBehindPlane(sphere_mesh, new Geometry.Vec3(0.0, 0.0, 0.0), new Geometry.Vec3(-1.0, 0.0, 0.0));
+	var node1 = new MinSG.GeometryNode(sphere_mesh);
+	rootNode += node1;
+};
 
-var mesh1 = Rendering.MeshBuilder.createBox(new Geometry.Box(-2, 0, 0, 1, 1, 1));
-var mesh2 = Rendering.MeshBuilder.createBox(new Geometry.Box(2, 0, 0, 1, 1, 1));
-var mesh3 = Rendering.MeshBuilder.createBox(new Geometry.Box(0, 0, -2, 1, 1, 1));
+var createThreeConesWithDifferentDrawState = fn(rootNode){
+	var numSegments = 20;
 
-var geometryNode1 = new MinSG.GeometryNode(mesh1);
-var geometryNode2 = new MinSG.GeometryNode(mesh2);
-var geometryNode3 = new MinSG.GeometryNode(mesh3);
-//
-//Building the scene graph
-rootNode.addChild(geometryNode1);
-rootNode.addChild(listNode);
+	var mesh1 = Rendering.MeshBuilder.createSphere(numSegments, numSegments);
+	var mesh2 = Rendering.MeshBuilder.createSphere(numSegments, numSegments);
+	var mesh3 = Rendering.MeshBuilder.createSphere(numSegments, numSegments);
+	var mesh4 = Rendering.MeshBuilder.createSphere(numSegments, numSegments);
 
-listNode += geometryNode2;
-listNode += geometryNode3;
+	//Setting draw modes
+	mesh1.setDrawTriangles(); //inital setting
+	mesh2.setDrawLines(); //draw lines only, rectangular shaped
+	mesh3.setDrawLineStrip(); //draw lines only, triangular shaped
+	mesh4.setDrawPoints(); //draw only points (positions of vertices)
 
-//giving nodes a unique id
-PADrend.getSceneManager().registerNode("root", rootNode);
-PADrend.getSceneManager().registerNode("some_list_node", listNode);
+	var node1 = new MinSG.GeometryNode(mesh1);
+	var node2 = new MinSG.GeometryNode(mesh2);
+	var node3 = new MinSG.GeometryNode(mesh3);
+	var node4 = new MinSG.GeometryNode(mesh4);
 
-PADrend.getSceneManager().registerNode("geometry_node_1", geometryNode1);
-PADrend.getSceneManager().registerNode("geometry_node_2", geometryNode2);
-PADrend.getSceneManager().registerNode("geometry_node_3", geometryNode3);
+	//Setting positions
+	node1.setRelPosition(new Geometry.Vec3(-2, 0, 0));
+	node2.setRelPosition(new Geometry.Vec3( 2, 0, 0));
+	node3.setRelPosition(new Geometry.Vec3(-8, 0, 0));
+	node4.setRelPosition(new Geometry.Vec3( 8, 0, 0));
 
-//Register the root node of the scene graph
-PADrend.registerScene(rootNode);
-//Selecting the root node to be the active scene
-PADrend.selectScene(rootNode);
+	rootNode += node1;
+	rootNode += node2;
+	rootNode += node3;
+	rootNode += node4;
+};
+
+
+// PADREND Register
+var sceneNode = new MinSG.ListNode();
+
+createThreeConesWithDifferentDrawState(sceneNode);
+clipSphere(sceneNode);
+
+//Register the scene
+PADrend.registerScene(sceneNode);
+//Selecting the scene to make it active
+PADrend.selectScene(sceneNode);
