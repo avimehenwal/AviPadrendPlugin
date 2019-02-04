@@ -63,7 +63,7 @@ static initGUI = fn(_gui){
 			GUI.TOOLTIP : "Dangerous button! Do not press!",
 			GUI.ON_CLICK : fn(){
                 // load escript
-                load(__DIR__ + "/aviplugin.escript");
+                load(__DIR__ + "/scripts/aviplugin.escript");
             }
 		},
 		{   GUI.TYPE : GUI.TYPE_BUTTON,
@@ -78,7 +78,7 @@ static initGUI = fn(_gui){
 			GUI.COLOR : GUI.GREEN,
 			//GUI.FONT : GUI.FONT_ID_LARGE,
 			GUI.TOOLTIP : "Dangerous button! Do not press!",
-			GUI.ON_CLICK : fn(){load(__DIR__ + "/toy.escript");}
+			GUI.ON_CLICK : fn(){load(__DIR__ + "/scripts/toy.escript");}
 		},
 		{
 			GUI.TYPE : GUI.TYPE_NUMBER,
