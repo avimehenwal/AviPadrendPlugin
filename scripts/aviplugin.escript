@@ -24,16 +24,32 @@ var pointLightNode = new MinSG.LightNode(MinSG.LightNode.POINT);
 pointLightNode.setAmbientLightColor(new Util.Color4f(1.0, 1.0, 1.0, 1.0));
 pointLightNode.setSpecularLightColor(new Util.Color4f(1.0, 1.0, 1.0, 1.0));
 pointLightNode.setDiffuseLightColor(new Util.Color4f(1.0, 1.0, 1.0, 1.0));
-pointLightNode.moveLocal(new Geometry.Vec3(xMovement, 5, 5));
+//pointLightNode.moveLocal(new Geometry.Vec3(xMovement, 5, 5));
+pointLightNode.moveLocal(new Geometry.Vec3(1, 5, 5));
 
 //creating a light state so that only the geometry node ist illuminated by the light source
 var lightingState = new MinSG.LightingState(pointLightNode);
 lightingState.setEnableLight(true);
 
+// frustum drawing
+//var frus = Rendering.createConicalFrustum(new Geometry.Frustum());
+//var frus = Rendering.MeshBuilder.createArrow(0.5, 8);
+//var frus = Rendering.createArrow(0.5, 8); //too few parameters
+var frus = Rendering.MeshBuilder.createConicalFrustum(1, 1.5, 3.8, 20);
+
 
 var geometryNode1 = new MinSG.GeometryNode(mesh1);
 var geometryNode2 = new MinSG.GeometryNode(mesh2);
 var geometryNode3 = new MinSG.GeometryNode(mesh3);
+var geometryNode4 = new MinSG.GeometryNode(frus);
+
+//apply SRT transformation to node
+var transformation = new Geometry.SRT();
+transformation.applyRotation(new Geometry.Vec3(7,1,0));
+//Number radiusBottom, Number radiusTop, Number height, Number segments)
+//geometryNode4.setWorldTransformation(transformation);
+frus.setWorldTransformation(transformation);
+//
 //adding the states to the node
 geometryNode2.addState(materialState);
 geometryNode2.addState(lightingState);
@@ -51,6 +67,7 @@ rootNode.addChild(geometryNode1);
 rootNode.addChild(listNode);
 rootNode.addChild(geometryNode2);
 rootNode.addChild(geometryNode3);
+rootNode.addChild(geometryNode4);
 
 
 
@@ -68,3 +85,10 @@ var date = getDate();
 PADrend.registerScene(rootNode);
 //Selecting the root node to be the active scene
 PADrend.selectScene(rootNode);
+
+
+var cam = frameContext.getCamera();
+var frustum = cam.getFrustum();
+outln("freustru"+frustum);
+
+
